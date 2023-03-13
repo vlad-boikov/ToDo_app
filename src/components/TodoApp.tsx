@@ -35,7 +35,7 @@ export const TodoApp: React.FC = () => {
 
   const { pathname } = useLocation();
 
-  const pushError = (erroType: ErrorTypes) => {
+  const pushError = (erroType: ErrorTypes | null) => {
     setError(erroType);
   };
 
@@ -59,6 +59,8 @@ export const TodoApp: React.FC = () => {
   };
 
   const addTodoHandler = useCallback(() => {
+    pushError(null);
+
     if (!title.trim()) {
       pushError(ErrorTypes.Empty);
 
@@ -98,6 +100,7 @@ export const TodoApp: React.FC = () => {
   }, [title]);
 
   const deleteTodoHandler = useCallback((id: number) => {
+    pushError(null);
     deleteTodo(id)
       .then(() => setAllTodos(
         prevAllTodos => prevAllTodos.filter(prevTodo => prevTodo.id !== id),
@@ -124,6 +127,7 @@ export const TodoApp: React.FC = () => {
 
   const todoStatusChangeHandler = useCallback(
     (id: number, isCompeled: boolean) => {
+      pushError(null);
       setSelectedTodoIds(prev => [...prev, id]);
 
       completeTodo(id, isCompeled)
@@ -161,6 +165,7 @@ export const TodoApp: React.FC = () => {
 
   const editingHandler = useCallback(
     (id: number, newData: string, oldData: string) => {
+      pushError(null);
       setIsEditing(false);
 
       if (!newData.trim()) {
